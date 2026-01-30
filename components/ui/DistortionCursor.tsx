@@ -13,6 +13,11 @@ export default function DistortionCursor() {
   const cursorYSpring = useSpring(cursorY, springConfig);
 
   useEffect(() => {
+    // Mobile check within effect to ensure window is available
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+      return;
+    }
+
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX - 16);
       cursorY.set(e.clientY - 16);
@@ -35,6 +40,9 @@ export default function DistortionCursor() {
     };
   }, [cursorX, cursorY]);
 
+  // Don't render on server or if mobile (requires hydration check ideally, but this is simple)
+  // For strict hydration match, we'd use a mounted state, but CSS/JS check is okay for this effect
+  
   return (
     <>
       {/* SVG Filter Definition */}
@@ -46,7 +54,7 @@ export default function DistortionCursor() {
       </svg>
 
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9999] mix-blend-difference hidden md:block"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,

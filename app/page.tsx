@@ -24,11 +24,13 @@ export default function Home() {
              <div className="absolute inset-0 bg-asphalt/50 mix-blend-multiply" />
           </div>
 
-          <div className="relative z-10 text-center mix-blend-hard-light">
-             <h1 className="font-oswald text-[12vw] leading-none text-zinc-200 tracking-tighter animate-glitch">
-               BHOPAL<br/>SB
-             </h1>
-             <p className="font-courier text-acid-green text-xl md:text-3xl mt-4 tracking-widest uppercase bg-asphalt inline-block px-4 rotate-2">
+          <div className="relative z-10 text-center mix-blend-hard-light flex flex-col items-center">
+             <img 
+               src="/logo.jpg" 
+               alt="Bhopal SB Logo" 
+               className="w-[60vw] md:w-[30vw] h-auto object-contain rounded-full filter contrast-125 mb-8 animate-glitch mix-blend-screen"
+             />
+             <p className="font-courier text-acid-green text-xl md:text-3xl tracking-widest uppercase bg-asphalt inline-block px-4 rotate-2">
                EST. 20XX // SKATE. CREATE. DESTROY.
              </p>
           </div>
@@ -81,7 +83,10 @@ export default function Home() {
                 </a>
              </div>
              <p className="font-courier text-zinc-600 text-sm">
-               © {new Date().getFullYear()} BHOPAL SB. ALL RIGHTS RESERVED. <br/>
+               <div className="flex items-center justify-center gap-4 mb-4">
+                  <img src="/logo.jpg" alt="Logo" className="w-12 h-12 rounded-full grayscale hover:grayscale-0 transition-all mix-blend-screen" />
+                  <span>© {new Date().getFullYear()} BHOPAL SB. ALL RIGHTS RESERVED.</span>
+               </div>
                BUILT FOR THE STREETS.
              </p>
           </footer>
