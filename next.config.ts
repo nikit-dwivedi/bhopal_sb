@@ -12,6 +12,14 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'plus.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'videos.pexels.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'grainy-gradients.vercel.app',
       }
     ],
   },

@@ -1,70 +1,96 @@
 "use client";
 
-import { use } from "react"; // Next.js 15+ unwrapping, safe for 16 too
+import { use } from "react";
 import { PROJECT_DATA } from "@/lib/data";
 import MasonryWall from "@/components/gallery/MasonryWall";
-import SpeedWobble from "@/components/ui/SpeedWobble";
+import SmoothScroll from "@/components/ui/SmoothScroll";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import SplitText from "@/components/ui/SplitText";
+import RevealSection from "@/components/ui/RevealSection";
+import MagneticButton from "@/components/ui/MagneticButton";
 
 export default function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const project = PROJECT_DATA.find((p) => p.id === id);
 
   if (!project) {
-      return (
-          <div className="h-screen flex items-center justify-center bg-asphalt text-acid-green font-oswald text-4xl">
-              PROJECT NOT FOUND
-          </div>
-      );
+    return (
+      <div className="h-screen flex items-center justify-center bg-asphalt text-acid-green font-oswald text-4xl">
+        PROJECT NOT FOUND
+      </div>
+    );
   }
 
   return (
     <main className="min-h-screen bg-asphalt text-zinc-100">
-       <SpeedWobble>
-          {/* Back Button */}
-          <div className="fixed top-8 left-8 z-50">
-             <Link href="/projects" className="flex items-center gap-2 font-oswald text-xl hover:text-acid-green transition-colors bg-asphalt/80 px-4 py-2">
-                 <ArrowLeft /> BACK
-             </Link>
-          </div>
+      <SmoothScroll>
+        {/* Back Button */}
+        <div className="fixed top-24 left-8 z-50">
+          <MagneticButton strength={0.2}>
+            <Link
+              href="/projects"
+              className="flex items-center gap-2 font-oswald text-xl hover:text-acid-green transition-colors bg-asphalt/80 backdrop-blur-sm px-4 py-2 border border-zinc-800"
+            >
+              <ArrowLeft size={18} /> BACK
+            </Link>
+          </MagneticButton>
+        </div>
 
-          <div className="container mx-auto py-24 px-4">
-             {/* HEADER */}
-             <div className="mb-16 border-b-4 border-spray-red pb-8">
-                 <span className="font-courier text-concrete">{project.date}</span>
-                 <h1 className="font-oswald text-6xl md:text-8xl text-white uppercase tracking-tighter mb-4">
-                     {project.title}
-                 </h1>
-                 <p className="font-courier text-xl max-w-2xl text-zinc-400">
-                     {project.description}
-                 </p>
-             </div>
+        <div className="container mx-auto py-32 px-4">
+          {/* HEADER */}
+          <RevealSection className="mb-20">
+            <div className="border-b border-zinc-800 pb-8">
+              <span className="font-courier text-concrete text-lg">{project.date}</span>
+              <SplitText
+                as="h1"
+                animation="slide-up"
+                stagger={0.04}
+                delay={0.2}
+                className="font-oswald text-6xl md:text-9xl text-white uppercase tracking-tighter mb-4 text-glow-green"
+              >
+                {project.title}
+              </SplitText>
+              <RevealSection direction="up" delay={0.5}>
+                <p className="font-courier text-xl max-w-2xl text-zinc-400 leading-relaxed">
+                  {project.description}
+                </p>
+              </RevealSection>
+            </div>
+          </RevealSection>
 
-             {/* MAIN VIDEO */}
-             <div className="aspect-video w-full bg-black mb-24 border-2 border-concrete shadow-2xl relative overflow-hidden group">
-                 <div className="absolute inset-0 bg-acid-green/10 pointer-events-none mix-blend-overlay group-hover:opacity-0 transition-opacity" />
-                 <iframe 
-                    width="100%" 
-                    height="100%" 
-                    src={project.videoUrl} 
-                    title={project.title} 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen
-                    className="grayscale contrast-125 hover:grayscale-0 transition-all duration-700"
-                 />
-             </div>
+          {/* MAIN VIDEO */}
+          <RevealSection direction="scale" delay={0.3}>
+            <div className="aspect-video w-full bg-black mb-24 border border-zinc-800 shadow-2xl relative overflow-hidden group glow-border-green">
+              <div className="absolute inset-0 bg-acid-green/5 pointer-events-none mix-blend-overlay group-hover:opacity-0 transition-opacity duration-500" />
+              <iframe
+                width="100%"
+                height="100%"
+                src={project.videoUrl}
+                title={project.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="grayscale contrast-125 hover:grayscale-0 transition-all duration-700"
+              />
+            </div>
+          </RevealSection>
 
-             {/* GALLERY */}
-             <div className="mb-24">
-                 <h2 className="font-oswald text-4xl mb-8 border-l-8 border-acid-green pl-4">
-                     PHOTO DUMP
-                 </h2>
-                 <MasonryWall items={project.images as any} />
-             </div>
-          </div>
-       </SpeedWobble>
+          {/* GALLERY */}
+          <RevealSection delay={0.2}>
+            <div className="mb-24">
+              <SplitText
+                as="h2"
+                animation="glitch-in"
+                className="font-oswald text-4xl mb-12 border-l-4 border-acid-green pl-6 text-glow-green"
+              >
+                PHOTO DUMP
+              </SplitText>
+              <MasonryWall items={project.images as any} />
+            </div>
+          </RevealSection>
+        </div>
+      </SmoothScroll>
     </main>
   );
 }

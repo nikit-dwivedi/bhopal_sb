@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Oswald, Courier_Prime } from "next/font/google";
 import NavBar from "@/components/layout/NavBar";
 import DistortionCursor from "@/components/ui/DistortionCursor";
+import ClientLayout from "@/components/layout/ClientLayout";
 import "./globals.css";
 
 const oswald = Oswald({
@@ -32,7 +33,7 @@ export default function RootLayout({
       >
         <DistortionCursor />
         <NavBar />
-        {children}
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

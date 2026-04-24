@@ -101,7 +101,7 @@ export default function TapeDeck() {
            })}
 
             {/* End Card - Giant Text */}
-           <div className="flex-shrink-0 w-[50vw] flex flex-col items-start justify-center relative translate-y-12 pl-12">
+           <div className="flex-shrink-0 w-[120vw] flex flex-col items-start justify-center relative translate-y-12 pl-12">
                <span className="font-courier text-concrete text-xl mb-2">END OF REEL.</span>
                <Link href="/projects" className="font-oswald text-[10vw] leading-none text-white hover:text-acid-green transition-colors underline decoration-spray-red decoration-8 underline-offset-8">
                    ARCHIVES &rarr;
