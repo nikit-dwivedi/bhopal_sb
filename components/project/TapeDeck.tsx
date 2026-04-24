@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState  } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Link from "next/link";
 import { PROJECT_DATA } from "@/lib/data";
@@ -8,9 +8,41 @@ import { cn } from "@/lib/utils";
 
 export default function TapeDeck() {
   const targetRef = useRef<HTMLDivElement>(null);
+  const [xEnd, setXEnd] = useState("-50%");
   const { scrollYProgress } = useScroll({
     target: targetRef,
   });
+
+  useEffect(() => {
+  const handleResize = () => {
+    const width = window.innerWidth;
+
+    const minWidth = 375;
+    const maxWidth = 1920;
+
+    const minTranslate = -70;
+    const maxTranslate = -45;
+
+    const clampedWidth = Math.min(
+      Math.max(width, minWidth),
+      maxWidth
+    );
+
+    const value =
+      minTranslate +
+      ((clampedWidth - minWidth) /
+        (maxWidth - minWidth)) *
+        (maxTranslate - minTranslate);
+
+    setXEnd(`${value}%`);
+  };
+
+  handleResize();
+
+  window.addEventListener("resize", handleResize);
+
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
 
   // Tighter scroll sync: 300vh height, transform only to -50% to prevent overscroll into void
   const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 90 });
@@ -18,7 +50,11 @@ export default function TapeDeck() {
   // Transform x based on content width approximation. 
   // We have Title (40vw) + 3 Tapes (60vh each ~ 30vw) + End (50vw) approx.
   // Let's being conservative to keep content on screen.
-  const x = useTransform(smoothProgress, [0, 1], ["0%", "-40%"]); 
+  const x = useTransform(
+  smoothProgress,
+  [0, 1],
+  ["0%", xEnd]
+);
   
   // Parallax background layers
   const bgX = useTransform(smoothProgress, [0, 1], ["0%", "10%"]);
